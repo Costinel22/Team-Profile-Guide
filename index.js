@@ -68,7 +68,7 @@ const setManager = [{
         message: "Please enter the email of the manager!"
     }, {
         type: "input",
-        name: "managerOfficeNumber",
+        name: "getOfficeNumber",
         message: "Please enter the officeNumber of the manager!"
     }
 ]
@@ -77,7 +77,7 @@ const setManager = [{
 async function init() {
     // Create first team object named Manager and after initialize the choice list
     const data = await inquirer.prompt(setManager);
-    const manager = new Manager(data.managerName, data.managerId, data.managerEmail, data.manageOfficeNumber);
+    const manager = new Manager(data.managerName, data.managerId, data.managerEmail, data.getOfficeNumber);
     allTeam.push(manager);
     // Add a chosen team list to be called or to get out of the team list
     let keepAdding = true;
