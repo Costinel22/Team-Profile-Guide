@@ -8,29 +8,27 @@ const fs = require("fs");
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-const generateTeam = require("./src/page-template.js");
+const render = require("./src/page-template.js");
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
-
-
-
-
-const setEnginner = [{
+let allTeam = [];
+// Create the array of team members
+const setEngineer = [{
         type: "input",
-        name: "enginnerName",
+        name: "engineerName",
         message: "Please enter the name of the enginner!"
     },
     {
         type: "input",
-        name: "enginnerId",
+        name: "engineerId",
         message: "Please enter the Id of the enginner!"
     }, {
         type: "input",
-        name: "enginnerEmail",
+        name: "engineerEmail",
         message: "Please enter the email of the enginner!"
     }, {
         type: "input",
-        name: "enginnerGithub",
+        name: "engineerGithub",
         message: "Please enter the Github of the enginner!"
     }
 ]
@@ -74,3 +72,58 @@ const setManager = [{
         message: "Please enter the officeNumber of the manager!"
     }
 ]
+
+// Use async function to execute the request 
+async function init() {
+    // Create first team object named Manager and after initialize the choice list
+    const data = await inquirer.prompt(setManager);
+    const manager = new Manager(data.managerName, data.managerId, data.managerEmail, data.manageOfficeNumber);
+    allTeam.push(manager);
+    // Add a chosen team list to be called or to get out of the team list
+    let keepAdding = true;
+    while (keepAdding) {
+        const getTeam = () => {
+            return inquirer.prompt([{
+                type: "list",
+                message: "Choose one of the team members you want to add! Or not!?",
+                name: "listOfTeamMembers",
+                choices: ["Engineer", "Intern", "I'm done adding team members!"]
+            }]);
+        };
+
+        const teamChoice = await getTeam();
+
+        switch (teamChoice.listOfTeamMembers) {
+            // Create a new team object named Intern
+            case 'Intern':
+                const internData = await inquirer.prompt(setIntern);
+                const intern = new Intern(internData.internName, internData.internId, internData.internEmail, internData.internSchool);
+                allTeam.push(intern);
+                break;
+                // Create a new team object named Enginner
+            case 'Engineer':
+                const engineerData = await inquirer.prompt(setEngineer);
+                const engineer = new Engineer(engineerData.engineerName, engineerData.engineerId, engineerData.engineerEmail, engineerData.engineerGithub);
+                allTeam.push(engineer);
+                break;
+
+            default:
+                // Stop adding after "I'm done" choice
+                keepAdding = false;
+                break;
+        }
+    }
+
+    // Call createHtml after the loop completes
+    createHtml();
+}
+
+// Create a separate function for HTML generation
+function createHtml() {
+    // Use the `allTeam` array assuming it contains the team members
+    fs.writeFileSync(outputPath, render(allTeam), "UTF-8");
+    console.log("Team created!");
+}
+
+// Call init once to start the program
+init();
