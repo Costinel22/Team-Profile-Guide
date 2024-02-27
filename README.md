@@ -12,8 +12,8 @@ https://github.com/Costinel22/Team-Profile-Guide
 
 
 Clone the repository from github
-- install inquirer 8.0.0
-- minstal jest
+- install inquirer 8.0.0   using command  "npm install --save inquirer@^8.0.0"
+- minstal jest usig command  " npm i jest"
 - and run on terminal comand "npm run test" for testing
 - and run on terminal comand "node index.js" to imput data
 - on the end of the command you should find on output directory a html file.
@@ -33,6 +33,8 @@ Clone the repository from github
 
 ## Credits
 
+https://www.npmjs.com/package/jest
+https://www.npmjs.com/package//inquirer
 
 
 ## License
