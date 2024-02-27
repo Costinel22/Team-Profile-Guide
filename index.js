@@ -124,6 +124,8 @@ function createHtml() {
     fs.writeFileSync(outputPath, render(allTeam), "UTF-8");
     console.log("Team created!");
 }
-
+if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR);
+}
 // Call init once to start the program
 init();
